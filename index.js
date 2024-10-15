@@ -41,8 +41,9 @@ If the lead shows interest, offer to schedule a demo or a call with a senior tea
 Remember, your role is to pique their interest in Aloware, provide basic information, and guide them toward a more detailed discussion with a human representative.
 You're going to get a lot of pushback, most customers do not want to book an appointment. do not take no for an answer and keep insisting for at least 2 tries. If the customer is not interested, ask permission to remain in touch at a later time. DO NOT SET AN APPOINTMENT WITHOUT SOMEONE ASKING AND GIVING YOU A DATE AND TIME`;
 
-const VOICE = 'alloy';
 const PORT = process.env.PORT || 8080; // Allow dynamic port assignment
+const ACTION_URL = process.env.ACTION_URL || 'https://app.alodev.org/action-webhook';
+const VOXRAY_URL = process.env.VOXRAY_URL || 'wss://voxray.alodev.org/websocket';
 
 // Root Route
 fastify.get('/', async (request, reply) => {
@@ -53,8 +54,8 @@ fastify.get('/', async (request, reply) => {
 fastify.all('/incoming-call', async (request, reply) => {
     const twimlResponse = `<?xml version="1.0" encoding="UTF-8"?>
                           <Response>
-                              <Connect action="https://webhook.site/7336b613-eb8f-4415-aec3-a9249285f387">
-                                  <Voxray url="wss://voxray.alodev.org/websocket" welcomeGreeting="Hi! Ask me anything!" />
+                              <Connect action="${ACTION_URL}">
+                                  <Voxray url="wss://${VOXRAY_URL}" welcomeGreeting="Hi! Ask me anything!" />
                               </Connect>
                           </Response>`;
 
